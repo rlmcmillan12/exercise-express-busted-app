@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const rangersModel = require('../db');
+const rangersModel = require('../model/db');
 
 router.get('/', (req, res) => {
     res.render('template', {
         locals: {
             title: 'List of Power Rangers',
-            data: rangersModel
+            rangersModel
         },
         partials: {
             body: 'partials/ranger-list',
@@ -17,12 +17,12 @@ router.get('/', (req, res) => {
 
 router.get('/:slug', (req, res) => {
     const { slug } = req.params;
-    const ranger = rangersModel.find((ranger => ranger.slug === slug)
+    const ranger = rangersModel.find((ranger => ranger.slug === slug))
     if (ranger) {
         res.render('template', {
             locals: {
+                ranger,
                 title: `Power Ranger: ${ranger.name}`,
-                ranger
             },
             partials: {
                 body: 'partials/ranger-details',
@@ -33,3 +33,5 @@ router.get('/:slug', (req, res) => {
     }
 
 });
+
+module.exports = router
